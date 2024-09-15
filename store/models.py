@@ -92,10 +92,6 @@ class Customer(models.Model):
 
     # pas besoin de créer Address ici, car on a déjà une relation one-to-one avec Address. Django va s'en occuper
 
-    class Meta:
-        db_table = "store_customers"
-        indexes = [models.Index(fields=["last_name", "first_name"])]
-
 
 class Order(models.Model):
 
