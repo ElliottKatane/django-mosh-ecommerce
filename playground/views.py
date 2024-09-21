@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.core.exceptions import ObjectDoesNotExist
-from store.models import Product, Order
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.aggregates import Count, Max, Min, Sum, Avg
+from store.models import Product, Order, OrderItem, Collection
+from tags.models import TaggedItem
 
 # Create your views here.
 # it's a request handler. It takes a request and returns a response
@@ -12,14 +14,22 @@ def say_hello(request):
     # __contains lookup type is case sensitive. __icontains is case insensitive
     # on peut ajouter deux fois __: collection__id__gt=1 par exemple
 
-    # queryset = (
-    #     Product.objects.prefetch_related("promotions")
-    #     .select_related("collection")
-    #     .all()
-    # )
-    queryset = (
-        Order.objects.select_related("customer")
-        .prefetch_related("orderitem_set")
-        .order_by("-placed_at")[:5]
+    # queryset = TaggedItem.objects.get_tags_for(Order, 2)
+
+    # pour update un objet, il faut d'abord le get(), parce que si on update seulement un des fields sans expliciter les autres, les autres vont devenir des empty strings par exemple.
+    collection = Collection.objects.get(pk=11)
+    collection.title = "Games"
+    collection.featured_product = None
+    collection.save()
+
+    # insert an object
+    # collection = Collection()
+    # collection.title = "Video Games"
+    # collection.featured_product = Product.objects.get(pk=1)
+    # collection.save()
+    # collection.id
+    return render(
+        request,
+        "hello.html",
+        {"name": "sup", "tags": "tags"},
     )
-    return render(request, "hello.html", {"name": "sup", "orders": list(queryset)})

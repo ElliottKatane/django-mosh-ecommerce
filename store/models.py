@@ -14,7 +14,16 @@ class Collection(models.Model):
         "Product", on_delete=models.SET_NULL, null=True, related_name="+"
     )
 
+    def __str__(
+        self,
+    ) -> str:
+        return self.title
+
+    # __str__ is a magic method that returns a string representation of the object. Notamment dans admin panel, Store, le nom de chaque collection est montré par le titre plutot que par object (n)
     # use quotes for Product because it's defined below. It's a forward reference.
+
+    class Meta:
+        ordering = ["title"]  # order by title (in admin panel)
 
 
 # many to many relationship with Product
@@ -59,6 +68,17 @@ class Product(models.Model):
     # many-to-many relationship with Promotion. plural here because there may be several promotions.
     slug = models.SlugField()
 
+    def __str__(
+        self,
+    ) -> str:
+        return self.title
+
+    # __str__ is a magic method that returns a string representation of the object. Notamment dans admin panel, Store, le nom de chaque collection est montré par le titre plutot que par object (n)
+    # use quotes for Product because it's defined below. It's a forward reference.
+
+    class Meta:
+        ordering = ["title"]  # order by title (in admin panel)
+
 
 class Customer(models.Model):
 
@@ -91,6 +111,13 @@ class Customer(models.Model):
     )
 
     # pas besoin de créer Address ici, car on a déjà une relation one-to-one avec Address. Django va s'en occuper
+    def __str__(
+        self,
+    ) -> str:
+        return f"{self.first_name, self.last_name}"  # au lieu d'avoir Customer Object (1), on aura le nom du customer quand on clique sur son nom
+
+    class Meta:
+        ordering = ["first_name"]  # order by title (in admin panel)
 
 
 class Order(models.Model):
