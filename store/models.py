@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -44,10 +44,12 @@ class Product(models.Model):
 
     title = models.CharField(max_length=255)
 
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     # always use DecimalField for money. it's always required to specify max_digits and decimal_places
-    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    unit_price = models.DecimalField(
+        max_digits=6, decimal_places=2, validators=[MinValueValidator(1)]
+    )  # validators=[MinValueValidator(1)] ensures that the value is at least 1
 
     inventory = models.IntegerField()
 
@@ -63,7 +65,7 @@ class Product(models.Model):
 
     # protect means that if the collection is deleted, the products contained in the collection will not be deleted
 
-    promotions = models.ManyToManyField(Promotion)
+    promotions = models.ManyToManyField(Promotion, blank=True)
 
     # many-to-many relationship with Promotion. plural here because there may be several promotions.
     slug = models.SlugField()

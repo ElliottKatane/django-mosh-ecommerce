@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "playground",
     "store",
+    "store_custom",  # je viens de tester de la commenter. pour l'instant ça retire les inlines de tags dans l'admin panel. donc ça marche. ça a bien rendu indépendant ce modèle de l'application tags
     "tags",
     "likes",
     "debug_toolbar",

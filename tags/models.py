@@ -24,6 +24,11 @@ class TaggedItemManager(models.Manager):
 class Tag(models.Model):
     label = models.CharField(max_length=255)
 
+    def __str__(self):
+        return (
+            self.label
+        )  # permet de retourner le label du tag dans l'admin panel plutôt que object (n)
+
 
 class TaggedItem(models.Model):
     objects = TaggedItemManager()
